@@ -12,7 +12,10 @@ return {
 		config = function()
 			-- ensure that we have lua language server, typescript launguage server, java language server, and java test language server are installed. Приходится вручную устанавливать jdtls из-за блокировки lombok
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls" },
+				ensure_installed = { "lua_ls", "jdtls" },
+				automatic_enable = {
+					exclude = { "jdtls" }, -- Исключаем jdtls, чтобы настроить его отдельно (например, через nvim-jdtls)
+				},
 			})
 		end,
 	},
@@ -64,7 +67,4 @@ return {
 			vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, { desc = "[C]ode Goto [D]eclaration" })
 		end,
 	},
-    {
-        'mfussenegger/nvim-jdtls'
-    }
 }
