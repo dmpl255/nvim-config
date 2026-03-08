@@ -3,7 +3,9 @@ return {
 		"williamboman/mason.nvim",
 		config = function()
 			-- setup mason with default properties
-			require("mason").setup()
+			require("mason").setup({
+				ensure_installed = { "mypy", "ruff", "black", "debugpy", "prettier" },
+			})
 		end,
 	},
 	-- mason lsp config utilizes mason to automatically ensure lsp servers you want installed are installed
@@ -12,7 +14,7 @@ return {
 		config = function()
 			-- ensure that we have lua language server, typescript launguage server, java language server, and java test language server are installed. Приходится вручную устанавливать jdtls из-за блокировки lombok
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "jdtls" },
+				ensure_installed = { "lua_ls", "jdtls", "pyright" },
 				automatic_enable = {
 					exclude = { "jdtls" }, -- Исключаем jdtls, чтобы настроить его отдельно (например, через nvim-jdtls)
 				},
@@ -41,6 +43,13 @@ return {
 
 			vim.lsp.enable("lua_ls")
 
+			vim.lsp.config.pyright = {
+				capabilities = capabilities,
+				filetypes = { "python" },
+			}
+
+			vim.lsp.enable("pyright")
+
 			-- Set vim motion for <Space> + c + h to show code documentation about the code the cursor is currently over if available
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
 			-- Set vim motion for <Space> + c + d to go where the code/variable under the cursor was defined
@@ -65,6 +74,14 @@ return {
 			vim.keymap.set("n", "<leader>cR", vim.lsp.buf.rename, { desc = "[C]ode [R]ename" })
 			-- Set a vim motion for <Space> + c + <Shift>D to go to where the code/object was declared in the project (class file)
 			vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, { desc = "[C]ode Goto [D]eclaration" })
+			-- Лучше показывать диагностику
+			vim.diagnostic.config({
+				virtual_text = true,
+				underline = true,
+				signs = true,
+				update_in_insert = false,
+				severity_sort = true,
+			})
 		end,
 	},
 }
