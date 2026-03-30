@@ -4,7 +4,7 @@ return {
 		config = function()
 			-- setup mason with default properties
 			require("mason").setup({
-				ensure_installed = { "mypy", "ruff", "black", "debugpy", "prettier" },
+				ensure_installed = { "mypy", "ruff", "black", "debugpy", "prettier", "lemminx" },
 			})
 		end,
 	},
@@ -43,13 +43,43 @@ return {
 
 			vim.lsp.enable("lua_ls")
 
+			local python_path = vim.fn.exepath("python")
+
 			vim.lsp.config.pyright = {
 				capabilities = capabilities,
 				filetypes = { "python" },
+				settings = {
+					python = {
+						pythonPath = python_path,
+						analysis = {
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "workspace", -- было "openFilesOnly" — теперь полный проект
+							typeCheckingMode = "basic", -- или "strict"
+							reportMissingTypeStubs = false,
+						},
+					},
+				},
 			}
 
 			vim.lsp.enable("pyright")
 
+			vim.lsp.config.lemminx = {
+				capabilities = capabilities,
+				settings = {
+					xml = {
+						format = {
+							enabled = true,
+							splitAttributes = "preserve", -- не ломает длинные <dependency>
+							maxLineWidth = 300,
+						},
+						server = {
+							workDir = "~/.cache/lemminx", -- чтобы не засорять
+						},
+					},
+				},
+			}
+			vim.lsp.enable("lemminx")
 			-- Set vim motion for <Space> + c + h to show code documentation about the code the cursor is currently over if available
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
 			-- Set vim motion for <Space> + c + d to go where the code/variable under the cursor was defined

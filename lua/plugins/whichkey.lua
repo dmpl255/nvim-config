@@ -16,8 +16,12 @@ return {
 			{ "<leader>d", group = "[D]ebug" },
 			{ "<leader>e", group = "[E]xplorer" },
 			{ "<leader>f", group = "[F]ind" },
-			{ "<leader>g", group = "[G]it" },
+			{ "<leader>g", group = "[g]it" },
 			{ "<leader>w", group = "[W]indow" },
+			{ "<leader>G", group = "[G]radle" },
+			{ "<leader>M", group = "[M]aven" },
+			{ "<leader>t", group = "[T]erminal" },
+            { "<leader>Js", group = "[S]pring" },
 		})
 	end,
 }
