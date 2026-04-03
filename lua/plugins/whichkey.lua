@@ -21,7 +21,9 @@ return {
 			{ "<leader>G", group = "[G]radle" },
 			{ "<leader>M", group = "[M]aven" },
 			{ "<leader>t", group = "[T]erminal" },
-            { "<leader>Js", group = "[S]pring" },
+			{ "<leader>Js", group = "[S]pring" },
+			{ "<leader>cg", group = "[C]make [G]enerate" }, -- или просто в +CMake
+			{ "<leader>cm", group = "[Cm]ake" },
 		})
 	end,
 }

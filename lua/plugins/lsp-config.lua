@@ -4,7 +4,16 @@ return {
 		config = function()
 			-- setup mason with default properties
 			require("mason").setup({
-				ensure_installed = { "mypy", "ruff", "black", "debugpy", "prettier", "lemminx" },
+				ensure_installed = {
+					"mypy",
+					"ruff",
+					"black",
+					"debugpy",
+					"prettier",
+					"lemminx",
+					"clangd",
+					"clangd-format",
+				},
 			})
 		end,
 	},
@@ -27,7 +36,7 @@ return {
 		config = function()
 			-- ensure the java debug adapter is installed
 			require("mason-nvim-dap").setup({
-				ensure_installed = { "java-debug-adapter", "java-test" },
+				ensure_installed = { "java-debug-adapter", "java-test", "codelldb" },
 			})
 		end,
 	},
@@ -80,6 +89,31 @@ return {
 				},
 			}
 			vim.lsp.enable("lemminx")
+
+			vim.lsp.config.clangd = {
+				capabilities = capabilities,
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=iwyu",
+					"--completion-style=detailed",
+					"--pch-storage=memory",
+					"--j=4", -- количество потоков
+				},
+				init_options = {
+					fallbackFlags = { "-std=c++23" }, -- можно менять на c++17/c++23
+				},
+				settings = {
+					clangd = {
+						inlayHints = {
+							parameterNames = true,
+							designatedParameters = true,
+						},
+					},
+				},
+			}
+			vim.lsp.enable("clangd")
 			-- Set vim motion for <Space> + c + h to show code documentation about the code the cursor is currently over if available
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
 			-- Set vim motion for <Space> + c + d to go where the code/variable under the cursor was defined
