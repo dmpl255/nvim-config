@@ -1,7 +1,6 @@
--- Left column and similar settings
 vim.opt.number = true         -- Отображает номер строк
 vim.opt.relativenumber = true -- Отображает относительный номер строки
-vim.opt.numberwidth = 4       -- Ширина колонки слева
+vim.opt.numberwidth = 2       -- Ширина колонки слева
 vim.opt.signcolumn = "yes"    -- always show sign column
 vim.opt.wrap = true           -- Включает автоматический перенос строк
 vim.opt.scrolloff = 10        -- Число строк, которые будут показаны относительно курсора сверху и снизу

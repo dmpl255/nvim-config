@@ -36,13 +36,10 @@ return {
 			{ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle" }
 
 		local function start_jdtls()
-			-- === ГЛАВНЫЙ ФИКС: не запускаем без настоящего проекта ===
 			local root_dir = require("jdtls.setup").find_root(root_markers)
 			if not root_dir then
-				vim.notify(
-					"No Java project root found (no pom.xml/gradlew/.git etc.). jdtls skipped.",
-					vim.log.levels.WARN
-				)
+				root_dir = vim.fn.getcwd()
+				vim.notify("JDTLS: Project root not found, using " .. root_dir .. " as workspace.", vim.log.levels.WARN)
 				return
 			end
 
@@ -102,6 +99,7 @@ return {
 					require("jdtls.dap").setup_dap_main_class_configs()
 
 					local opts = { buffer = bufnr }
+
 					vim.keymap.set(
 						"n",
 						"<leader>Jo",
@@ -132,6 +130,13 @@ return {
 						jdtls.test_class,
 						vim.tbl_extend("force", opts, { desc = "[J]ava [T]est Class" })
 					)
+					vim.keymap.set("n", "<leader>Jgt", function()
+						require("jdtls.tests").generate()
+						vim.notify("Генерирую тестовый класс...", vim.log.levels.INFO)
+					end, vim.tbl_extend("force", opts, { desc = "[J]ava [G]enerate [T]est" }))
+					vim.keymap.set("n", "<leader>Jgs", function()
+						require("jdtls.tests").goto_subjects()
+					end, vim.tbl_extend("force", opts, { desc = "[J]ava [G]oto [S]ubjects" }))
 					vim.keymap.set(
 						"n",
 						"<leader>Jn",
@@ -151,16 +156,13 @@ return {
 			jdtls.start_or_attach(config)
 		end
 
-		-- Запуск только при открытии Java-файла
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "java",
 			callback = start_jdtls,
 		})
 
-		-- === ГЛАВНЫЙ ФИКС №2: убиваем GradleDaemon при выходе ===
 		vim.api.nvim_create_autocmd("VimLeavePre", {
 			callback = function()
-				-- Неблокирующие команды
 				pcall(function()
 					vim.fn.jobstart({ "gradle", "--stop" }, { detach = true })
 				end)

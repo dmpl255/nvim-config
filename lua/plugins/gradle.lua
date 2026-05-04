@@ -2,10 +2,10 @@ return {
 	"oclay1st/gradle.nvim",
 	cmd = { "Gradle", "GradleExec", "GradleInit", "GradleFavorites" },
 	dependencies = {
-		"nvim-lua/plenary.nvim", -- у тебя уже есть из harpoon/telescope
+		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
 	},
-	opts = {}, -- дефолтные настройки отличные
+	opts = {},
 	keys = {
 		{ "<leader>G", desc = "+Gradle", mode = { "n", "v" } },
 		{ "<leader>Gg", "<cmd>Gradle<CR>", desc = "Gradle Projects" },
