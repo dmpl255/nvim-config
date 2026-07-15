@@ -13,6 +13,7 @@ return {
 					"clangd",
 					"clangd-format",
 				},
+				PATH = "append",
 			})
 		end,
 	},
@@ -68,7 +69,7 @@ return {
 
 			vim.lsp.config.lemminx = {
 				capabilities = capabilities,
-                filetypes = { "xml", "jsp", "jspf" },
+				filetypes = { "xml", "jsp", "jspf" },
 				settings = {
 					xml = {
 						format = {

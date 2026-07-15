@@ -27,7 +27,6 @@ return {
 
 			vim.keymap.set("n", "<leader>dc", dapui.close, { desc = "[D]ebug [C]lose" })
 
-
 			dap.configurations.java = {
 				{
 					type = "java",
@@ -48,6 +47,13 @@ return {
 		config = function(_, opts)
 			local path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
 			require("dap-python").setup(path)
+		end,
+	},
+	{
+		"theHamsta/nvim-dap-virtual-text",
+		dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-dap-virtual-text").setup()
 		end,
 	},
 }
