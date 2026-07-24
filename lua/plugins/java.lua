@@ -80,6 +80,17 @@ return {
 						references = { includeDecompiledSources = true },
 						signatureHelp = { enabled = true },
 						contentProvider = { preferred = "fernflower" },
+						symbols = {
+							includeSourceMethodDeclarations = true,
+						},
+						inlayHints = {
+							parameterNames = {
+								enabled = "all",
+							},
+						},
+						saveActions = {
+							organizeImports = true,
+						},
 						completion = {
 							favoriteStaticMembers = {
 								"org.hamcrest.MatcherAssert.assertThat",
@@ -103,6 +114,9 @@ return {
 				init_options = { bundles = bundles },
 
 				on_attach = function(client, bufnr)
+					if client:supports_method("textDocument/inlayHint") then
+						vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+					end
 					jdtls.setup_dap({ hotcodereplace = "auto" })
 					require("jdtls.dap").setup_dap_main_class_configs()
 
@@ -155,7 +169,7 @@ return {
 						jdtls.test_class({ config_overrides = { noDebug = true } })
 					end, vim.tbl_extend("force", opts, { desc = "[J]ava [T]est [C]lass (no [d]ebug)" }))
 					vim.keymap.set("n", "<leader>Jdr", function()
-						require("dap").repl.open({}, "split") -- или "split"
+						require("dap").repl.open({}, "split")
 					end, vim.tbl_extend("force", opts, { desc = "Open [D]AP [R]EPL" }))
 					vim.keymap.set("n", "<leader>Jdo", function()
 						require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes)
