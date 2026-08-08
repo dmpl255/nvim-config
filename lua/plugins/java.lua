@@ -43,6 +43,8 @@ return {
 				return
 			end
 
+			local extendedClientCapabilities = jdtls.extendedClientCapabilities
+
 			local config = {
 				cmd = {
 					"java",
@@ -65,12 +67,13 @@ return {
 					"-data",
 					vim.fn.stdpath("cache") .. "/jdtls/" .. vim.fn.fnamemodify(root_dir, ":p:h:t"),
 				},
-
 				root_dir = root_dir,
 				capabilities = require("cmp_nvim_lsp").default_capabilities(),
 
 				settings = {
+					extendedClientCapabilities = extendedClientCapabilities,
 					java = {
+
 						eclipse = { downloadSources = true },
 						configuration = { updateBuildConfiguration = "interactive" },
 						maven = { downloadSources = true },
@@ -88,9 +91,7 @@ return {
 								enabled = "all",
 							},
 						},
-						saveActions = {
-							organizeImports = true,
-						},
+
 						completion = {
 							favoriteStaticMembers = {
 								"org.hamcrest.MatcherAssert.assertThat",
