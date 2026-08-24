@@ -40,15 +40,15 @@ return {
 		"neovim/nvim-lspconfig",
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			vim.lsp.config.lua_ls = {
+			vim.lsp.config("lua_ls", {
 				capabilities = capabilities,
-			}
+			})
 
 			vim.lsp.enable("lua_ls")
 
 			local python_path = vim.fn.exepath("python")
 
-			vim.lsp.config.pyright = {
+			vim.lsp.config("pyright", {
 				capabilities = capabilities,
 				filetypes = { "python" },
 				settings = {
@@ -63,11 +63,11 @@ return {
 						},
 					},
 				},
-			}
+			})
 
 			vim.lsp.enable("pyright")
 
-			vim.lsp.config.lemminx = {
+			vim.lsp.config("lemminx", {
 				capabilities = capabilities,
 				filetypes = { "xml", "jsp", "jspf" },
 				settings = {
@@ -82,10 +82,10 @@ return {
 						},
 					},
 				},
-			}
+			})
 			vim.lsp.enable("lemminx")
 
-			vim.lsp.config.clangd = {
+			vim.lsp.config("clangd", {
 				capabilities = capabilities,
 				cmd = {
 					"clangd",
@@ -93,11 +93,7 @@ return {
 					"--clang-tidy",
 					"--header-insertion=iwyu",
 					"--completion-style=detailed",
-					"--pch-storage=memory",
-					"--j=4",
-				},
-				init_options = {
-					fallbackFlags = { "-std=c++23" },
+					"--header-insertion-decorators",
 				},
 				settings = {
 					clangd = {
@@ -107,13 +103,13 @@ return {
 						},
 					},
 				},
-			}
+			})
 			vim.lsp.enable("clangd")
 
-			vim.lsp.config.html = {
+			vim.lsp.config("html", {
 				capabilities = capabilities,
 				filetypes = { "html", "jsp", "htmldjango" },
-			}
+			})
 			vim.lsp.enable("html")
 
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
