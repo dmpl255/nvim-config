@@ -33,3 +33,13 @@ vim.keymap.set("n", "<leader>tf", function()
     end
     open_external_terminal(dir)
 end, { desc = "Open alacritty in file's directory" })
+
+vim.keymap.set("n", "<leader>/", "gcc", {
+    remap = true,
+    desc = "Comment line",
+})
+
+vim.keymap.set("v", "<leader>/", "gc", {
+    remap = true,
+    desc = "Comment selection",
+})
