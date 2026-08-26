@@ -1,9 +1,13 @@
 return {
 	"mfussenegger/nvim-jdtls",
 	ft = { "java" },
-	dependencies = { "nvim-lua/plenary.nvim" },
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"saghen/blink.cmp",
+	},
 	config = function()
 		local jdtls = require("jdtls")
+
 		local mason_path = vim.fn.stdpath("data") .. "/mason"
 
 		local jdtls_path = mason_path .. "/packages/jdtls"
@@ -68,7 +72,7 @@ return {
 					vim.fn.stdpath("cache") .. "/jdtls/" .. vim.fn.fnamemodify(root_dir, ":p:h:t"),
 				},
 				root_dir = root_dir,
-				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 
 				settings = {
 					extendedClientCapabilities = extendedClientCapabilities,
@@ -118,8 +122,6 @@ return {
 					if client:supports_method("textDocument/inlayHint") then
 						vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 					end
-					jdtls.setup_dap({ hotcodereplace = "auto" })
-					require("jdtls.dap").setup_dap_main_class_configs()
 
 					local opts = { buffer = bufnr }
 
@@ -157,9 +159,11 @@ return {
 						require("jdtls.tests").generate()
 						vim.notify("Генерирую тестовый класс...", vim.log.levels.INFO)
 					end, vim.tbl_extend("force", opts, { desc = "[J]ava [G]enerate [T]est" }))
+
 					vim.keymap.set("n", "<leader>Jgs", function()
 						require("jdtls.tests").goto_subjects()
 					end, vim.tbl_extend("force", opts, { desc = "[J]ava [G]oto [S]ubjects" }))
+
 					vim.keymap.set(
 						"n",
 						"<leader>Jtn",
@@ -169,16 +173,7 @@ return {
 					vim.keymap.set("n", "<leader>Jtcd", function()
 						jdtls.test_class({ config_overrides = { noDebug = true } })
 					end, vim.tbl_extend("force", opts, { desc = "[J]ava [T]est [C]lass (no [d]ebug)" }))
-					vim.keymap.set("n", "<leader>Jdr", function()
-						require("dap").repl.open({}, "split")
-					end, vim.tbl_extend("force", opts, { desc = "Open [D]AP [R]EPL" }))
-					vim.keymap.set("n", "<leader>Jdo", function()
-						require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes)
-					end, vim.tbl_extend("force", opts, { desc = "[D]AP [O]utput / Scopes" }))
 
-					vim.keymap.set("n", "<leader>Jdu", function()
-						require("dapui").toggle()
-					end, vim.tbl_extend("force", opts, { desc = "Toggle [D]AP [U]I" }))
 					vim.keymap.set("n", "<leader>Jr", function()
 						require("jdtls").update_project_config()
 						vim.notify(
@@ -186,26 +181,6 @@ return {
 							vim.log.levels.INFO
 						)
 					end, vim.tbl_extend("force", opts, { desc = "[J]ava [R]efresh project config" }))
-
-					vim.keymap.set("n", "<leader>Jdt", function()
-						local dap_term_buf = nil
-						for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-							local name = vim.api.nvim_buf_get_name(buf)
-							if name:match("dap%-terminal") then
-								dap_term_buf = buf
-								break
-							end
-						end
-						if not dap_term_buf then
-							vim.notify("DAP terminal not found. Start debugging first.", vim.log.levels.WARN)
-							return
-						end
-						if vim.api.nvim_get_current_buf() == dap_term_buf then
-							return
-						end
-						vim.cmd("split")
-						vim.cmd("buffer " .. dap_term_buf)
-					end, vim.tbl_extend("force", opts, { desc = "[J]ava [D]AP [T]erminal" }))
 				end,
 			}
 

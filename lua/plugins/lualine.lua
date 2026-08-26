@@ -1,10 +1,19 @@
 return {
-	"nvim-lualine/lualine.nvim",
-	dependencies = {
-		"nvim-tree/nvim-web-devicons",
+	{
+		"nvim-mini/mini.icons",
+		opts = {},
+		config = function(_, opts)
+			require("mini.icons").setup(opts)
+			require("mini.icons").mock_nvim_web_devicons()
+		end,
 	},
-	config = function()
-		require("lualine").setup({
+
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = {
+			"nvim-mini/mini.icons",
+		},
+		opts = {
 			options = {
 				icons_enabled = true,
 				theme = "tokyonight",
@@ -14,15 +23,10 @@ return {
 					statusline = {},
 					winbar = {},
 				},
-				ignore_focus = { "NvimTree" },
 				always_divide_middle = true,
 				globalstatus = false,
-				refresh = {
-					statusline = 1000,
-					tabline = 1000,
-					winbar = 1000,
-				},
 			},
+
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics" },
@@ -31,6 +35,7 @@ return {
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},
+
 			inactive_sections = {
 				lualine_a = {},
 				lualine_b = {},
@@ -39,10 +44,6 @@ return {
 				lualine_y = {},
 				lualine_z = {},
 			},
-			tabline = {},
-			winbar = {},
-			inactive_winbar = {},
-			extensions = {},
-		})
-	end,
+		},
+	},
 }

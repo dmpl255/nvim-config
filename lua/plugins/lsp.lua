@@ -1,59 +1,23 @@
 return {
 	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup({
-				ensure_installed = {
-					"mypy",
-					"ruff",
-					"black",
-					"debugpy",
-					"prettier",
-					"lemminx",
-					"clangd",
-					"clangd-format",
-				},
-				PATH = "append",
-			})
-		end,
-	},
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "jdtls", "pyright", "html" },
-				automatic_enable = {
-					exclude = { "jdtls" },
-				},
-			})
-		end,
-	},
-	{
-		"jay-babu/mason-nvim-dap.nvim",
-		config = function()
-			require("mason-nvim-dap").setup({
-				ensure_installed = { "java-debug-adapter", "java-test", "codelldb" },
-			})
-		end,
-	},
-	{
 		"neovim/nvim-lspconfig",
+		dependencies = {
+			"saghen/blink.cmp",
+		},
 		config = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			vim.lsp.config("lua_ls", {
 				capabilities = capabilities,
 			})
 
 			vim.lsp.enable("lua_ls")
 
-			local python_path = vim.fn.exepath("python")
-
 			vim.lsp.config("pyright", {
 				capabilities = capabilities,
 				filetypes = { "python" },
 				settings = {
 					python = {
-						pythonPath = python_path,
+						pythonPath = vim.fn.exepath("python"),
 						analysis = {
 							autoSearchPaths = true,
 							useLibraryCodeForTypes = true,
@@ -78,7 +42,7 @@ return {
 							maxLineWidth = 300,
 						},
 						server = {
-							workDir = "~/.cache/lemminx",
+							workDir = vim.fn.expand("~/.cache/lemminx"),
 						},
 					},
 				},
@@ -115,18 +79,13 @@ return {
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
 			vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "[C]ode Goto [D]efinition" })
 			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
-			vim.keymap.set(
-				"n",
-				"<leader>cr",
-				require("telescope.builtin").lsp_references,
-				{ desc = "[C]ode Goto [R]eferences" }
-			)
-			vim.keymap.set(
-				"n",
-				"<leader>ci",
-				require("telescope.builtin").lsp_implementations,
-				{ desc = "[C]ode Goto [I]mplementations" }
-			)
+			vim.keymap.set("n", "<leader>cr", function()
+				Snacks.picker.lsp_references()
+			end, { desc = "[C]ode Goto [R]eferences" })
+
+			vim.keymap.set("n", "<leader>ci", function()
+				Snacks.picker.lsp_implementations()
+			end, { desc = "[C]ode Goto [I]mplementations" })
 			vim.keymap.set("n", "<leader>cR", vim.lsp.buf.rename, { desc = "[C]ode [R]ename" })
 			vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, { desc = "[C]ode Goto [D]eclaration" })
 			vim.diagnostic.config({

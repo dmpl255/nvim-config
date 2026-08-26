@@ -1,26 +1,30 @@
 return {
 	"folke/which-key.nvim",
-	event = "VimEnter",
-	config = function()
-		local which_key = require("which-key")
 
-		which_key.setup()
+	event = "VeryLazy",
 
-		which_key.add({
+	opts = {
+		spec = {
 			{ "<leader>/", group = "Comments" },
-			{ "<leader>J", group = "[J]ava" },
-			{ "<leader>c", group = "[C]ode" },
-			{ "<leader>d", group = "[D]ebug" },
-			{ "<leader>e", group = "[E]xplorer" },
-			{ "<leader>f", group = "[F]ind" },
-			{ "<leader>g", group = "[g]it" },
-			{ "<leader>w", group = "[W]indow" },
-			{ "<leader>G", group = "[G]radle" },
-			{ "<leader>M", group = "[M]aven" },
-			{ "<leader>t", group = "[T]erminal" },
-			{ "<leader>Js", group = "[S]pring" },
-			{ "<leader>cg", group = "[C]make [G]enerate" },
-			{ "<leader>cm", group = "[Cm]ake" },
-		})
-	end,
+			{ "<leader>J", group = "Java" },
+			{ "<leader>c", group = "Code" },
+			{ "<leader>d", group = "Debug" },
+			{ "<leader>e", group = "Explorer" },
+			{ "<leader>f", group = "Find" },
+			{ "<leader>G", group = "Gradle" },
+			{ "<leader>M", group = "Maven" },
+			{ "<leader>t", group = "Terminal" },
+			{ "<leader>w", group = "Window" },
+		},
+	},
+
+	keys = {
+		{
+			"<leader>?",
+			function()
+				require("which-key").show({ global = false })
+			end,
+			desc = "Buffer Local Keymaps",
+		},
+	},
 }
