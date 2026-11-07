@@ -20,7 +20,6 @@ return {
 		opts = {
 			formatters_by_ft = {
 				lua = { "stylua" },
-
 				python = { "ruff_format" },
 
 				javascript = { "prettier" },
@@ -35,12 +34,25 @@ return {
 				c = { "clang_format" },
 				cpp = { "clang_format" },
 
-				java = { "google_java_format" },
+				java = { "google-java-format" },
+
+				nginx = { "nginxfmt" },
+				dockerfile = { "dockerfmt" },
+				yaml = { "yamlfmt" },
+
+				groovy = { "npm-groovy-lint" },
 			},
 
 			formatters = {
-				google_java_format = {
-					append_args = { "--aosp" },
+				prettier = {
+					prepend_args = {
+						"--print-width",
+						"120",
+						"--no-single-attribute-per-line",
+						"--bracket-same-line",
+						"--html-whitespace-sensitivity",
+						"ignore",
+					},
 				},
 			},
 		},

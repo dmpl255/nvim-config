@@ -16,6 +16,8 @@ local languages = {
 	"markdown_inline",
 	"gitignore",
 	"html",
+	"css",
+	"javascript",
 }
 
 return {

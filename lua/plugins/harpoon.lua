@@ -6,12 +6,21 @@ return {
 		"nvim-lua/plenary.nvim",
 	},
 	config = function()
-		vim.keymap.set("n", "<s-m>", "<cmd>lua require('harpoon.mark').add_file()<cr>", { desc = "Harpoon Mark File" })
-		vim.keymap.set(
-			"n",
-			"<TAB>",
-			"<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",
-			{ desc = "Harpoon Toggle Menu" }
-		)
+		local harpoon = require("harpoon")
+
+		harpoon:setup({
+			settings = {
+				save_on_toggle = true,
+				sync_on_ui_close = true,
+			},
+		})
+
+		vim.keymap.set("n", "<S-M>", function()
+			harpoon:list():add()
+		end, { desc = "Harpoon Mark File" })
+
+		vim.keymap.set("n", "<TAB>", function()
+			harpoon.ui:toggle_quick_menu(harpoon:list())
+		end, { desc = "Harpoon Toggle Menu" })
 	end,
 }

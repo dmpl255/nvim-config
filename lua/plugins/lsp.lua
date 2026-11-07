@@ -8,8 +8,21 @@ return {
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			vim.lsp.config("lua_ls", {
 				capabilities = capabilities,
+				root_dir = function()
+					return vim.fs.root(0, { ".luarc.json", ".git", "lua" }) or vim.fn.getcwd()
+				end,
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim" } },
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+							checkThirdParty = false,
+						},
+						telemetry = { enable = false },
+					},
+				},
 			})
-
 			vim.lsp.enable("lua_ls")
 
 			vim.lsp.config("pyright", {
@@ -75,6 +88,16 @@ return {
 				filetypes = { "html", "jsp", "htmldjango" },
 			})
 			vim.lsp.enable("html")
+
+			vim.lsp.config("cssls", {
+				capabilities = capabilities,
+			})
+            vim.lsp.enable("cssls")
+
+			vim.lsp.config("tsc", {
+				capabilities = capabilities,
+			})
+            vim.lsp.enable("tsc")
 
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
 			vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "[C]ode Goto [D]efinition" })

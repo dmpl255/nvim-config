@@ -25,7 +25,6 @@ return {
 			show_guides = true,
 
 			manage_folds = false,
-
 		},
 
 		keys = {
@@ -33,18 +32,6 @@ return {
 				"<leader>a",
 				"<cmd>AerialToggle!<cr>",
 				desc = "[A]erial Outline",
-			},
-
-			{
-				"<leader>an",
-				"<cmd>AerialNext<cr>",
-				desc = "[A]erial [N]ext",
-			},
-
-			{
-				"<leader>ap",
-				"<cmd>AerialPrev<cr>",
-				desc = "[A]erial [P]revious",
 			},
 		},
 	},
