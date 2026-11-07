@@ -10,6 +10,17 @@ return {
 				enabled = true,
 				ui_select = true,
 			},
+
+			terminal = {
+				win = {
+					style = "terminal",
+					position = "float",
+					width = 0,
+					height = 0,
+					border = "none",
+					backdrop = false,
+				},
+			},
 		},
 
 		keys = {
