@@ -1,11 +1,17 @@
 return {
 	{
 		"folke/snacks.nvim",
+
+		lazy = false,
+		priority = 1000,
+
 		opts = {
 			picker = {
+				enabled = true,
 				ui_select = true,
 			},
 		},
+
 		keys = {
 			{
 				"<leader>FF",
