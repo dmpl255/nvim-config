@@ -73,6 +73,28 @@ return {
 				end,
 				desc = "[F]ind Existing [B]uffers",
 			},
+
+			{
+				"<leader>uC",
+				function()
+
+					require("lazy").load({
+						plugins = {
+							"catppuccin",
+							"rose-pine",
+							"kanagawa",
+							"github-theme",
+							"nightfox",
+							"modus",
+						},
+						wait = true,
+						show = false,
+					})
+
+					Snacks.picker.colorschemes()
+				end,
+				desc = "[U]I [C]olorscheme",
+			},
 		},
 	},
 }
