@@ -9,6 +9,10 @@ return {
 			picker = {
 				enabled = true,
 				ui_select = true,
+				sources = {
+					files = { hidden = true },
+					grep = { hidden = true },
+				},
 			},
 
 			terminal = {
@@ -73,19 +77,26 @@ return {
 				end,
 				desc = "[F]ind Existing [B]uffers",
 			},
-
+			{
+				"<leader>fh",
+				function()
+					Snacks.picker.git_diff()
+				end,
+				desc = "[F]ind git diff ([H]unks)",
+			},
+			{
+				"<leader>fd",
+				function()
+					Snacks.picker.diagnostics()
+				end,
+				desc = "[F]ind [D]iagnostics",
+			},
 			{
 				"<leader>uC",
 				function()
-
 					require("lazy").load({
 						plugins = {
-							"catppuccin",
-							"rose-pine",
-							"kanagawa",
 							"github-theme",
-							"nightfox",
-							"modus",
 						},
 						wait = true,
 						show = false,

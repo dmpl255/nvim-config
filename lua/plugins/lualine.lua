@@ -24,14 +24,17 @@ return {
 					winbar = {},
 				},
 				always_divide_middle = true,
-				globalstatus = false,
+				globalstatus = true,
 			},
 
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics" },
-				lualine_c = { "filename" },
-				lualine_x = { "encoding", "fileformat", "filetype" },
+				lualine_c = {
+					{ "filetype", icon_only = true, padding = { left = 1, right = 0 }, separator = { right = "" } },
+					{ "filename", path = 1, file_status = true, newfile_status = true },
+				},
+				lualine_x = { "encoding", "fileformat" },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},

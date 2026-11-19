@@ -11,6 +11,10 @@ vim.keymap.set("n", "<leader>wh", ":split<cr>", { desc = "[W]indow Split [H]oriz
 vim.keymap.set("v", "<", "<gv", { desc = "Indent left in visual mode" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
+vim.keymap.set("n", "<C-a>", "gg<S-v>G", { desc = "Copy all" })
+vim.keymap.set("n", "+", "<C-a>", { desc = "Increment number" })
+vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement number" })
+
 -- =========================================
 -- Terminal
 -- =========================================
@@ -42,6 +46,11 @@ vim.keymap.set("n", "<leader>tf", function()
 end, {
 	desc = "[T]erminal [F]ile directory",
 })
+
+-- =========================================
+-- Comment
+-- =========================================
+
 vim.keymap.set("n", "<leader>/", "gcc", {
 	remap = true,
 	desc = "Comment line",

@@ -8,8 +8,13 @@ return {
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			vim.lsp.config("lua_ls", {
 				capabilities = capabilities,
-				root_dir = function()
-					return vim.fs.root(0, { ".luarc.json", ".git", "lua" }) or vim.fn.getcwd()
+				root_dir = function(bufnr, on_dir)
+					local root = vim.fs.root(bufnr, {
+						".luarc.json",
+						".git",
+						"lua",
+					})
+					on_dir(root or vim.fn.getcwd())
 				end,
 				settings = {
 					Lua = {
@@ -92,15 +97,17 @@ return {
 			vim.lsp.config("cssls", {
 				capabilities = capabilities,
 			})
-            vim.lsp.enable("cssls")
+			vim.lsp.enable("cssls")
 
 			vim.lsp.config("tsc", {
 				capabilities = capabilities,
 			})
-            vim.lsp.enable("tsc")
+			vim.lsp.enable("tsc")
 
 			vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
-			vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "[C]ode Goto [D]efinition" })
+			vim.keymap.set("n", "<leader>cd", function()
+				Snacks.picker.lsp_definitions()
+			end, { desc = "[C]ode Goto [D]efinition" })
 			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
 			vim.keymap.set("n", "<leader>cr", function()
 				Snacks.picker.lsp_references()
@@ -109,8 +116,11 @@ return {
 			vim.keymap.set("n", "<leader>ci", function()
 				Snacks.picker.lsp_implementations()
 			end, { desc = "[C]ode Goto [I]mplementations" })
+			vim.keymap.set("n", "<leader>cs", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 			vim.keymap.set("n", "<leader>cR", vim.lsp.buf.rename, { desc = "[C]ode [R]ename" })
-			vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, { desc = "[C]ode Goto [D]eclaration" })
+			vim.keymap.set("n", "<leader>cD", function()
+				Snacks.picker.lsp_declarations()
+			end, { desc = "[C]ode Goto [D]eclaration" })
 			vim.diagnostic.config({
 				virtual_text = true,
 				underline = true,

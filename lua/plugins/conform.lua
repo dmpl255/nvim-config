@@ -34,8 +34,6 @@ return {
 				c = { "clang_format" },
 				cpp = { "clang_format" },
 
-				java = { "google-java-format" },
-
 				nginx = { "nginxfmt" },
 				dockerfile = { "dockerfmt" },
 				yaml = { "yamlfmt" },
