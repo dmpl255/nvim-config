@@ -16,7 +16,6 @@ return {
 				function()
 					local dap = require("dap")
 
-					-- Java-specific DAP initialization.
 					if vim.bo.filetype == "java" then
 						local jdtls = require("jdtls")
 
@@ -136,9 +135,7 @@ return {
 			{
 				"mfussenegger/nvim-dap-python",
 				config = function()
-					local debugpy_python =
-						vim.fn.stdpath("data")
-						.. "/mason/packages/debugpy/venv/bin/python"
+					local debugpy_python = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
 
 					require("dap-python").setup(debugpy_python)
 				end,
@@ -188,9 +185,6 @@ return {
 				},
 			})
 
-			-- Don't automatically open the regular dap-ui layouts.
-			-- We use floating elements instead.
-
 			dap.listeners.after.event_terminated.dapui_config = function()
 				dapui.close()
 			end
@@ -199,7 +193,6 @@ return {
 				dapui.close()
 			end
 
-			-- Java DAP configuration.
 			dap.configurations.java = {
 				{
 					type = "java",

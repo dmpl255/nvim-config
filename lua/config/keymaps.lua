@@ -11,35 +11,52 @@ vim.keymap.set("n", "<leader>wh", ":split<cr>", { desc = "[W]indow Split [H]oriz
 vim.keymap.set("v", "<", "<gv", { desc = "Indent left in visual mode" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
-local startup_dir = vim.fn.getcwd()
+vim.keymap.set("n", "<C-a>", "gg<S-v>G", { desc = "Copy all" })
+vim.keymap.set("n", "+", "<C-a>", { desc = "Increment number" })
+vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement number" })
 
-local function open_external_terminal(dir)
-    local escaped_dir = dir:gsub(" ", "\\ ")
-    local cmd = string.format("alacritty --working-directory %s", escaped_dir)
-    vim.fn.jobstart(cmd, { detach = true })
+-- =========================================
+-- Terminal
+-- =========================================
+
+local function toggle_terminal(cwd)
+	local terminal = vim.b.snacks_terminal
+
+	if type(terminal) == "table" and terminal.cwd then
+		cwd = terminal.cwd
+	end
+
+	Snacks.terminal.toggle(nil, {
+		cwd = cwd or vim.fn.getcwd(),
+	})
 end
 
-vim.keymap.set("n", "<leader>tt", function()
-    open_external_terminal(startup_dir)
-end, { desc = "Open alacritty in startup directory" })
+vim.keymap.set({ "n", "t" }, "<leader>tt", function()
+	toggle_terminal()
+end, {
+	desc = "[T]oggle [T]erminal",
+})
 
 vim.keymap.set("n", "<leader>tf", function()
-    local file = vim.fn.expand("%:p")
-    local dir
-    if file ~= "" then
-        dir = vim.fn.fnamemodify(file, ":h")
-    else
-        dir = startup_dir
-    end
-    open_external_terminal(dir)
-end, { desc = "Open alacritty in file's directory" })
+	local file = vim.api.nvim_buf_get_name(0)
+
+	local dir = file ~= "" and vim.fn.fnamemodify(file, ":p:h") or vim.fn.getcwd()
+
+	toggle_terminal(dir)
+end, {
+	desc = "[T]erminal [F]ile directory",
+})
+
+-- =========================================
+-- Comment
+-- =========================================
 
 vim.keymap.set("n", "<leader>/", "gcc", {
-    remap = true,
-    desc = "Comment line",
+	remap = true,
+	desc = "Comment line",
 })
 
 vim.keymap.set("v", "<leader>/", "gc", {
-    remap = true,
-    desc = "Comment selection",
+	remap = true,
+	desc = "Comment selection",
 })

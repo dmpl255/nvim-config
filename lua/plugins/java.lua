@@ -22,9 +22,22 @@ return {
 			vim.fn.glob(java_debug_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", true, true)
 		)
 
+		vim.list_extend(bundles, require("spring_boot").java_extensions())
+
 		local java_test_jars = vim.fn.glob(java_test_path .. "/extension/server/*.jar", true, true)
+
+		local excluded = {
+			["com.microsoft.java.test.runner-jar-with-dependencies.jar"] = true,
+			["jacocoagent.jar"] = true,
+		}
+
 		for _, jar in ipairs(java_test_jars) do
-			if not jar:match("runner") and not jar:match("jacocoagent") then
+			local filename = vim.fn.fnamemodify(jar, ":t")
+
+			-- Эти библиотеки уже поставляются внутри JDT LS.
+			local is_bundled_by_jdtls = filename:match("^org%.objectweb%.asm")
+
+			if not excluded[filename] and not is_bundled_by_jdtls then
 				table.insert(bundles, jar)
 			end
 		end

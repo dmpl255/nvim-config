@@ -66,6 +66,9 @@ return {
 						scrollbar = false,
 					},
 				},
+				menu = {
+					scrollbar = false,
+				},
 			},
 			snippets = {
 				preset = "luasnip",
